@@ -1,0 +1,49 @@
+{
+  "name": "youtube-plus-rpc",
+  "version": "1.1.0",
+  "description": "YouTube Plus Discord RPC",
+  "author": "Dayanch96",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "discord-rpc": "^4.0.1",
+    "electron-store": "^8.2.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "electron": "^41.1.0",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.dvntm.ytpdiscordrpc",
+    "productName": "YouTube Plus RPC",
+    "files": [
+      "index.js",
+      "settings.html",
+      "assets/**",
+      "node_modules/**"
+    ],
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.utilities",
+      "identity": null
+    },
+    "win": {
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      },
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false
+    }
+  }
+}

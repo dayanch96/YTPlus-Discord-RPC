@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Settings</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    background: #1a1a1a;
+    color: #e8e8e8;
+    font-size: 13px;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  .titlebar {
+    height: 36px;
+    background: #222;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    -webkit-app-region: drag;
+    border-bottom: 1px solid #2e2e2e;
+    gap: 8px;
+  }
+
+  .titlebar-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #999;
+    flex: 1;
+    text-align: center;
+  }
+
+  .content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    height: calc(100vh - 36px - 52px);
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    padding: 0 2px;
+  }
+
+  .section-label:first-child {
+    margin-top: 0;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #252525;
+    border-radius: 8px;
+    padding: 9px 12px;
+    gap: 12px;
+    border: 1px solid #2e2e2e;
+  }
+
+  .row-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row-title {
+    font-size: 13px;
+    color: #e0e0e0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .row-desc {
+    font-size: 11px;
+    color: #666;
+  }
+
+  .toggle {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: #3a3a3a;
+    border-radius: 10px;
+    transition: background 0.2s;
+    border: 1px solid #444;
+  }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    background: #888;
+    border-radius: 50%;
+    transition: transform 0.2s, background 0.2s;
+    pointer-events: none;
+  }
+
+  .toggle input:checked ~ .toggle-track {
+    background: #5865f2;
+    border-color: #5865f2;
+  }
+
+  .toggle input:checked ~ .toggle-thumb {
+    transform: translateX(16px);
+    background: #fff;
+  }
+
+  select {
+    background: #2e2e2e;
+    border: 1px solid #3e3e3e;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 12px;
+    padding: 4px 8px;
+    cursor: pointer;
+    outline: none;
+    -webkit-appearance: none;
+    padding-right: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+  }
+
+  select:focus {
+    border-color: #5865f2;
+  }
+
+  input[type="text"] {
+    background: #2e2e2e;
+    border: 1px solid #3e3e3e;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 12px;
+    padding: 5px 8px;
+    outline: none;
+    width: 180px;
+    font-family: 'SF Mono', monospace;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus {
+    border-color: #5865f2;
+  }
+
+  input[type="text"]::placeholder {
+    color: #555;
+  }
+
+  .hint {
+    font-size: 11px;
+    color: #555;
+    padding: 0 2px;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: #1a1a1a;
+    border-top: 1px solid #2e2e2e;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+  }
+
+  .btn:active { opacity: 0.7; }
+
+  .btn-secondary {
+    background: #2e2e2e;
+    color: #ccc;
+    border: 1px solid #3e3e3e;
+  }
+
+  .btn-primary {
+    background: #5865f2;
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: #4752c4;
+  }
+</style>
+</head>
+<body>
+
+<div class="titlebar">
+  <div class="titlebar-title">YouTube Plus RPC Settings</div>
+</div>
+
+<div class="content">
+
+  <div class="section-label">Activity</div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Activity type</span>
+    </div>
+    <select id="activityType" onchange="updateThirdLine()">
+      <option value="3">Watching</option>
+      <option value="0">Playing</option>
+      <option value="2">Listening</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Show progress bar</span>
+      <span class="row-desc">Display video timestamps</span>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="showProgress">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Show play/pause icon</span>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="showSmallIcon">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Show "Watch on YouTube" button</span>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="showButton">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Clear presence on pause</span>
+      <span class="row-desc">Remove status when video is paused</span>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="clearOnPause">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+  <div class="section-label">Custom Templates</div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Details</span>
+      <span class="row-desc">First line of status</span>
+    </div>
+    <input type="text" id="customDetails" placeholder="{title}">
+  </div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">State</span>
+      <span class="row-desc">Second line of status</span>
+    </div>
+    <input type="text" id="customState" placeholder="{channel}">
+  </div>
+
+  <div class="row" id="thirdLineRow" style="display:none">
+    <div class="row-label">
+      <span class="row-title">Large text</span>
+      <span class="row-desc">Shown on thumbnail hover (Listening: album)</span>
+    </div>
+    <input type="text" id="customLargeText" placeholder="{title}">
+  </div>
+
+  <div class="hint">Available variables: {title}, {channel}</div>
+
+  <div class="section-label">System</div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Start with system</span>
+      <span class="row-desc">Launch automatically on login</span>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="launchAtLogin">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+  <div class="row">
+    <div class="row-label">
+      <span class="row-title">Don't remind to open Discord</span>
+      <span class="row-desc">Suppress warning when Discord is closed</span>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="suppressDiscordAlert">
+      <div class="toggle-track"></div>
+      <div class="toggle-thumb"></div>
+    </label>
+  </div>
+
+</div>
+
+<div class="footer">
+  <button class="btn btn-secondary" onclick="window.close()">Cancel</button>
+  <button class="btn btn-primary" onclick="save()">Save</button>
+</div>
+
+<script>
+  const { ipcRenderer } = require('electron')
+
+  function updateThirdLine() {
+    const type = parseInt(document.getElementById('activityType').value)
+    document.getElementById('thirdLineRow').style.display = type === 2 ? 'flex' : 'none'
+  }
+
+  ipcRenderer.invoke('get-settings').then(settings => {
+    document.getElementById('activityType').value = settings.activityType
+    document.getElementById('showProgress').checked = settings.showProgress
+    document.getElementById('showSmallIcon').checked = settings.showSmallIcon
+    document.getElementById('showButton').checked = settings.showButton
+    document.getElementById('clearOnPause').checked = settings.clearOnPause
+    document.getElementById('customDetails').value = settings.customDetails
+    document.getElementById('customState').value = settings.customState
+    document.getElementById('customLargeText').value = settings.customLargeText || ''
+    document.getElementById('launchAtLogin').checked = settings.launchAtLogin
+    document.getElementById('suppressDiscordAlert').checked = settings.suppressDiscordAlert || false
+    updateThirdLine()
+  })
+
+  function save() {
+    ipcRenderer.invoke('save-settings', {
+      activityType: parseInt(document.getElementById('activityType').value),
+      showProgress: document.getElementById('showProgress').checked,
+      showSmallIcon: document.getElementById('showSmallIcon').checked,
+      showButton: document.getElementById('showButton').checked,
+      clearOnPause: document.getElementById('clearOnPause').checked,
+      customDetails: document.getElementById('customDetails').value || '{title}',
+      customState: document.getElementById('customState').value || '{channel}',
+      customLargeText: document.getElementById('customLargeText').value || '',
+      launchAtLogin: document.getElementById('launchAtLogin').checked,
+      suppressDiscordAlert: document.getElementById('suppressDiscordAlert').checked,
+    }).then(() => window.close())
+  }
+</script>
+</body>
+</html>
