@@ -14,7 +14,7 @@ Show what you're watching on YouTube in your Discord status. In real time
 
 ### macOS
 
-1. Download **YouTubePlusRPC-mac.dmg** from [Releases](https://github.com/dayanch96/YTLite/releases/tag/discord-rpc)
+1. Download **YouTube.Plus.RPC-X.X.X-arm64.dmg** from [Releases](https://github.com/dayanch96/YTPlus-Discord-RPC/releases/)
 2. Open the `.dmg` and drag the app to your Applications folder
 3. Launch **YouTube Plus RPC** from Applications
 
@@ -22,7 +22,7 @@ Show what you're watching on YouTube in your Discord status. In real time
 
 ### Windows
 
-1. Download **YouTubePlusRPC-win-setup.exe** from [Releases](https://github.com/dayanch96/YTLite/releases/tag/discord-rpc)
+1. Download **YouTube.Plus.RPC.Setup.X.X.X.exe** from [Releases](https://github.com/dayanch96/YTPlus-Discord-RPC/releases/)
 2. Run the installer and follow the steps
 3. Launch **YouTube Plus RPC** from the desktop shortcut
 
