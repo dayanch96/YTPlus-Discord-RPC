@@ -3,7 +3,7 @@
 Last updated: April 22, 2026
 
 ## 1. Overview
-YouTube Plus RPC does not collect or store any personal data.
+YTPlus Discord RPC does not collect or store any personal data.
 
 ## 2. Data Processing
 The following data is processed locally and never stored or shared:
